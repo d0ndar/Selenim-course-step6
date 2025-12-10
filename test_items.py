@@ -9,5 +9,5 @@ def test_guest_should_see_add_to_cart_button(browser):
     browser.get(link)
 
     button = browser.find_element(By.CSS_SELECTOR, ".btn-add-to-basket")
-    assert button is not None
+    assert button.is_displayed()
     time.sleep(5)
