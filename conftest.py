@@ -3,18 +3,13 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 
-@pytest.fixture(scope="function")
 def pytest_addoption(parser):
     parser.addoption('--language', action='store', default="en",
                      help="Choose language: English(en) or Russian(ru)")
 
-@pytest.fixture(scope="session")
-def language(request):
-    """Фикстура для получения значения language"""
-    return request.config.getoption("--language")
-
 @pytest.fixture(scope="function")
-def browser(request, language):
+def browser(request):
+    language = request.config.getoption("language")
     print(f"\nstart browser for test.. with laguage{language}")
     options = Options()
 
@@ -24,6 +19,7 @@ def browser(request, language):
     options.add_argument(f"--lang={language}")
 
     browser = webdriver.Chrome(options=options)
+    browser.implicitly_wait(10)
     yield browser
     print("\nquit browser..")
     browser.quit()
